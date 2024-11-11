@@ -1,11 +1,11 @@
-import express from 'express';
-import { query } from './db';
+const express = require('express');
+const cors = require('cors');
+const query = require('./db');
 
 const app = express();
-app.use(express.json());
+app.use(express.json()).use(cors({ origin: 'http://localhost:5173' }));
 
 const PORT = process.env.SERVER_PORT || 3000;
-export const BASE_URL = `http://localhost:${PORT}`;
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
