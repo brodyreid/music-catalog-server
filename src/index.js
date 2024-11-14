@@ -18,14 +18,26 @@ app.get('/', (_req, res) => {
 
 app.get('/projects', async (_req, res) => {
   try {
+    const result = await query(`SELECT * FROM projects;`);
+    res.json(result.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server error');
+  }
+});
+
+app.get('/projects/collaborators', async (_req, res) => {
+  try {
     const result = await query(`
       SELECT *
-      FROM
-      projects;
-    `);
+      FROM projects p
+      JOIN project_collaborators pc ON pc.project_id = p.project_id
+      JOIN people p2 ON p2.person_id = pc.person_id
+      `
+    );
     res.json(result.rows);
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
     res.status(500).send('Server error');
   }
 });
