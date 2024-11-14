@@ -12,3 +12,5 @@ _rollback 1 step_
 `npx db-migrate create:seed initial_seed`
 
 `npx db-migrate up:seed` _this runs the /seeds subfolder_
+
+`npx db-migrate reset`

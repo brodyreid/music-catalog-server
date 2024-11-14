@@ -12,10 +12,6 @@ app.listen(PORT, () => {
 });
 
 // Routes
-app.get('/', (_req, res) => {
-  res.send('Hello world!');
-});
-
 app.get('/projects', async (_req, res) => {
   try {
     const result = await query(`SELECT * FROM projects;`);
@@ -26,13 +22,13 @@ app.get('/projects', async (_req, res) => {
   }
 });
 
-app.get('/projects/collaborators', async (_req, res) => {
+app.get('/projects/contributors', async (_req, res) => {
   try {
     const result = await query(`
       SELECT *
       FROM projects p
-      JOIN project_collaborators pc ON pc.project_id = p.project_id
-      JOIN people p2 ON p2.person_id = pc.person_id
+      JOIN project_contributors pc ON pc.project_id = p.id
+      JOIN contributors c ON c.id = pc.contributor_id
       `
     );
     res.json(result.rows);
