@@ -25,10 +25,12 @@ app.get('/projects', async (_req, res) => {
 app.get('/projects/contributors', async (_req, res) => {
   try {
     const result = await query(`
-      SELECT *
+      SELECT p.id, p.title, p.folder_path, p.notes, p.date_created, array_agg(c."name") as contributors
       FROM projects p
       JOIN project_contributors pc ON pc.project_id = p.id
       JOIN contributors c ON c.id = pc.contributor_id
+      GROUP BY p.id
+      ORDER BY p.id;
       `
     );
     res.json(result.rows);
