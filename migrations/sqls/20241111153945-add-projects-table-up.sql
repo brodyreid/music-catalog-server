@@ -1,5 +1,5 @@
 CREATE TABLE projects (
-  id integer PRIMARY KEY,
+  id char(16) PRIMARY KEY,
   title varchar(255),
   folder_path text,
   notes text,

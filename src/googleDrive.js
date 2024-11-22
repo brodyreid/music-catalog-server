@@ -6,7 +6,7 @@ const auth = new google.auth.GoogleAuth({
   scopes: ['https://www.googleapis.com/auth/drive.readonly']
 });
 
-async function authenticateAndListFiles() {
+module.exports = async function () {
   try {
     const authClient = await auth.getClient();
     const drive = google.drive({ version: 'v3', auth: authClient });
@@ -17,6 +17,4 @@ async function authenticateAndListFiles() {
   } catch (error) {
     console.error('Error authenticating or accessing Google Drive: ', error);
   }
-}
-
-authenticateAndListFiles();
+};

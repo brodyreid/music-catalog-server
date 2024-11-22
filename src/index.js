@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-const query = require('./db');
-const googleDrive = require('./googleDrive');
+const pool = require('./pool');
+// const googleDrive = require('./googleDrive');
 
 const app = express();
 app.use(express.json()).use(cors({ origin: 'http://localhost:5173' }));
@@ -15,7 +15,7 @@ app.listen(PORT, () => {
 // Routes
 app.get('/projects', async (_req, res) => {
   try {
-    const result = await query(`SELECT * FROM projects;`);
+    const result = await pool.query(`SELECT * FROM projects;`);
     res.json(result.rows);
   } catch (error) {
     console.error(error);
@@ -25,7 +25,7 @@ app.get('/projects', async (_req, res) => {
 
 app.get('/projects/versions/contributors', async (_req, res) => {
   try {
-    const result = await query(`
+    const result = await pool.query(`
       SELECT p.id, p.title, p.folder_path, p.notes, p.date_created, ARRAY_AGG(DISTINCT c."name") as contributors, ARRAY_AGG(DISTINCT v."name") as versions
       FROM projects p
       LEFT JOIN project_contributors pc ON pc.project_id = p.id
@@ -42,12 +42,12 @@ app.get('/projects/versions/contributors', async (_req, res) => {
   }
 });
 
-app.get('/list-drive-files', async (_req, res) => {
-  try {
-    const result = await googleDrive.listFiles();
-    res.json(result);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error listing files from Google Drive' });
-  }
-});
+// app.get('/list-drive-files', async (_req, res) => {
+//   try {
+//     const result = await googleDrive.listFiles();
+//     res.json(result);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'Error listing files from Google Drive' });
+//   }
+// });
