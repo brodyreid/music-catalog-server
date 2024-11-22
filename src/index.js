@@ -15,7 +15,29 @@ app.listen(PORT, () => {
 // Routes
 app.get('/projects', async (_req, res) => {
   try {
-    const result = await pool.query(`SELECT * FROM projects;`);
+    const result = await pool.query(`
+      SELECT
+        p.id, 
+        p.title,
+        p.release_name,
+        p.folder_path, 
+        p.notes, 
+        p.date_created, 
+        JSONB_AGG(DISTINCT jsonb_build_object('id', c.id, 'name', c."name")) AS contributors,
+        JSONB_AGG(DISTINCT jsonb_build_object('id', v.id, 'name', v."name")) AS versions
+      FROM
+        projects p
+      LEFT JOIN project_contributors pc ON
+        pc.project_id = p.id
+      LEFT JOIN contributors c ON
+        c.id = pc.contributor_id
+      LEFT JOIN versions v ON
+        v.project_id = p.id
+      GROUP BY
+        p.id
+      ORDER BY
+        p.id;
+      `);
     res.json(result.rows);
   } catch (error) {
     console.error(error);
@@ -23,18 +45,25 @@ app.get('/projects', async (_req, res) => {
   }
 });
 
-app.get('/projects/versions/contributors', async (_req, res) => {
+app.post('/project/:id/release', async (req, res) => {
+  const { id } = req.params;
+  const { release_name } = req.body;
+
+  if (!release_name || !id) {
+    return res.status(400).send('No release name or no id.');
+  }
+
   try {
     const result = await pool.query(`
-      SELECT p.id, p.title, p.folder_path, p.notes, p.date_created, ARRAY_AGG(DISTINCT c."name") as contributors, ARRAY_AGG(DISTINCT v."name") as versions
-      FROM projects p
-      LEFT JOIN project_contributors pc ON pc.project_id = p.id
-      LEFT JOIN contributors c ON c.id = pc.contributor_id
-      LEFT JOIN versions v on v.project_id = p.id
-      GROUP BY p.id
-      ORDER BY p.id;
-      `
-    );
+      UPDATE
+        projects
+      SET
+        release_name = $1
+      WHERE 
+        id = $2
+      RETURNING
+        *;
+      `, [release_name, id]);
     res.json(result.rows);
   } catch (error) {
     console.error(error);
