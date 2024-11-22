@@ -45,7 +45,7 @@ app.get('/projects', async (_req, res) => {
   }
 });
 
-app.post('/project/:id/release', async (req, res) => {
+app.post('/project/:id/release_name', async (req, res) => {
   const { id } = req.params;
   const { release_name } = req.body;
 
