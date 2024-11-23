@@ -71,6 +71,32 @@ app.post('/project/:id/release_name', async (req, res) => {
   }
 });
 
+app.post('/project/:id/notes', async (req, res) => {
+  const { id } = req.params;
+  const { notes } = req.body;
+
+  if (!notes || !id) {
+    return res.status(400).send('No note body or no id.');
+  }
+
+  try {
+    const result = await pool.query(`
+      UPDATE
+        projects
+      SET
+        notes = $1
+      WHERE 
+        id = $2
+      RETURNING
+        *;
+      `, [notes, id]);
+    res.json(result.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server error');
+  }
+})
+
 // app.get('/list-drive-files', async (_req, res) => {
 //   try {
 //     const result = await googleDrive.listFiles();
