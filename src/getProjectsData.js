@@ -7,7 +7,8 @@ async function getProjectsData(baseDir) {
       return {
         id: entry.id,
         title: entry.projectName,
-        folder_path: entry.parentDirectory
+        folder_path: entry.parentDirectory,
+        date_created: entry.dateCreated
       };
     });
 

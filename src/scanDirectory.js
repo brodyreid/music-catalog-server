@@ -54,6 +54,7 @@ async function scanDirectory(baseDir) {
       const fullPath = path.join(baseDir, entry.name);
 
       if (entry.name.endsWith(' Project')) {
+        const metadata = await fs.stat(fullPath);
         const versions = await getVersions(fullPath);
         const projectName = entry.name;
         const id = createDeterministicId(projectName);
@@ -62,6 +63,7 @@ async function scanDirectory(baseDir) {
           id,
           projectName,
           parentDirectory: baseDir,
+          dateCreated: metadata.birthtime,
           versions
         };
       }

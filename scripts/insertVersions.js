@@ -1,8 +1,13 @@
 const getVersionsData = require('../src/getVersionsData.js');
 const pool = require('../src/pool.js');
 
+const baseDir = process.argv[2];
+if (!baseDir) {
+  console.error('Please provide a base directory path');
+  process.exit(1);
+}
+
 async function insertVersions() {
-  const baseDir = '/Users/brodyreid/Music/Ableton/Projects/BB Productions/2024';
   const client = await pool.connect();
 
   try {
@@ -28,6 +33,4 @@ async function insertVersions() {
   }
 }
 
-insertVersions().finally(() => {
-  console.info('Script finished!');
-});
+insertVersions().finally(() => console.info('Script finished.'));
