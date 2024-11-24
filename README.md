@@ -1,4 +1,10 @@
 # music-catalog-server
+
+## Populate projects and versions tables
+```
+node scripts/insertData.js "/path/to/base/folder"
+```
+
 ## I will forget these commands... so I've documented some examples here.
 
 `npx db-migrate create add-projects`

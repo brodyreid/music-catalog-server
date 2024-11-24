@@ -1,5 +1,6 @@
 {
   "defaultEnv": "local",
+  "sql-file": true,
   "local": {
     "driver": "pg",
     "user": {

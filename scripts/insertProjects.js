@@ -1,13 +1,7 @@
 const getProjectsData = require('../src/getProjectsData.js');
 const pool = require('../src/pool.js');
 
-const baseDir = process.argv[2];
-if (!baseDir) {
-  console.error('Please provide a base directory path');
-  process.exit(1);
-}
-
-async function insertProjects() {
+async function insertProjects(baseDir) {
   const client = await pool.connect();
 
   try {
@@ -34,4 +28,4 @@ async function insertProjects() {
   }
 }
 
-insertProjects().finally(() => console.info('Script finished!'));
+module.exports = insertProjects;

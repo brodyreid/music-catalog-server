@@ -5,14 +5,21 @@ async function getVersionsData(baseDir) {
   try {
     const paths = await scanDirectory(baseDir);
     const versionsData = paths.flatMap(entry => {
-      return entry.versions.map(version => ({
-        id: createDeterministicId(version),
-        name: version,
-        project_id: entry.id
-      }));
+      return entry.versions.map(version => {
+        const cleanProjectName = entry.projectName.replace(' Project', '');
+        const cleanVersionName = version.replace('.als', '');
+
+        if (cleanProjectName === cleanVersionName) { return; }
+
+        return {
+          id: createDeterministicId(version),
+          name: version,
+          project_id: entry.id
+        };
+      });
     });
 
-    return versionsData;
+    return versionsData.filter(v => v);
   } catch (error) {
     console.error(error);
   }
