@@ -1,28 +1,26 @@
 -- Insert seed data into contributors table
-INSERT INTO public.contributors (id, "name") VALUES ("1", 'Banana Boy'), ("2", 'Mookymakesmusic'), ("3", 'Marbl'), ("4", 'Bally'), ("5", 'Trev'), ("6", 'Claudia'), ("7", 'Rick'), ("8", 'Waryaa'), ("9", 'Remi');
+INSERT INTO public.contributors (id, first_name, artist_name) VALUES ("1", 'Finn', 'Baby Finn'), ("2", '', 'Jake the Dog'), ("3", 'Princess Bubblegum', 'Bubble P'), ("4", 'Lumpy Space Princess', 'DJ LSP'), ("5", 'Marceline', ''), ("6", 'BMO', ''), ("7", 'Gunter', 'DJ Pengüino'), ("8", '', 'Ice King'), ("9", 'Starchy', '');
 
 -- Insert seed data into projects table
 -- dates are yyyy-mm-dd
-INSERT INTO public.projects (id, title, folder_path, notes, date_created) VALUES
-("1", 'A Good Winter', '/Users/brodyreid/Documents/Music/Ableton/Projects/BB Productions/2024/"8". August/699 [bon iver] Project', '', '2024-08-03'),
-("2", 'Give Up the Money', '/Users/brodyreid/Documents/Music/Ableton/Projects/BB Productions/2024/"7". July/697 [video game ost] Project', 'mooky and i turned this into a BANGER', '2024-07-24'),
-("3", 'brb', '/Users/brodyreid/Documents/Music/Ableton/Projects/BB Productions/2023/"7". July/634 [b r b] Project', '', '2023-07-24'),
-("4", 'It Sounded Like a River; It Was Just the Trees', '/Users/brodyreid/Documents/Music/Ableton/Projects/BB Productions/2023/11. November/659 [shit talk] Project', 'not doing vocals on this anymore. the instrumental is good enough', '2023-11-06'),
-("5", 'Blockbuster Video', '/Users/brodyreid/Documents/Music/Ableton/Projects/Mooky/Blockbuster Video Project', '', '2024-08-07'),
-("6", 'Do You', '/Users/brodyreid/Documents/Music/Ableton/Projects/Mooky/forza Project', '', '2023-05-01'),
-("7", 'Maybe Later', '/Users/brodyreid/Documents/Music/Ableton/Projects/Marbl/Maybe Later Project', 'marie on the hook but make it trevs song', '2024-06-23');
+INSERT INTO public.projects (id, title, folder_path, notes, date_created, release_name) VALUES
+("1", 'buff baby Project', '/Users/username/Documents/Music/Ableton/Projects/My Productions/buff baby Project', '', '2024-08-03', 'Puncha yo Buns'),
+("2", 'cool beat Project', '/Users/username/Documents/Music/Ableton/Projects/My Productions/cool beat Project', 'love this one!', '2024-07-24', 'Bacon Pancakes'),
+("3", 'sad song idea Project', '/Users/username/Documents/Music/Ableton/Projects/My Productions/sad song idea Project', '', '2023-07-24', 'Not Just Your Little Girl'),
+("4", 'hiphop type Project', '/Users/username/Documents/Music/Ableton/Projects/Collabs/hiphop type Project', 'reminds me of christmas! should rerelease this next year', '2023-11-06', 'The Decorating Song'),
+("5", 'august jam session Project', '/Users/username/Documents/Music/Ableton/Projects/Collabs/august jam session Project', '', '2024-08-07', 'My Best Friends in the World (What Am I To You?)'),
+("6", 'upbeat dancey Project', '/Users/username/Documents/Music/Ableton/Projects/My Productions/upbeat dancey Project', '', '2023-05-01', ''),
+("7", 'sunday song Project', '/Users/username/Documents/Music/Ableton/Projects/My Productions/sunday song Project', 'couldnt figure out what to do for instruments here... maybe ask someone for guitar on top?', '2024-06-23', '');
 
 -- Insert seed data into project_contributors table
-INSERT INTO public.project_contributors (project_id, contributor_id) VALUES ("1", "1"), ("2", "1"), ("2", "2"), ("3", "1"), ("3", "9"), ("4", "1"), ("5", "1"), ("5", "2"), ("6", "1"), ("6", "2"), ("7", "1"), ("7", "3"), ("7", "5");
+INSERT INTO public.project_contributors (project_id, contributor_id) VALUES ("1", "1"), ("2", "2"), ("3", "5"), ("4", "1"), ("4", "2"), ("5", "1"), ("5", "2"), ("5", "3"), ("5", "5"), ("5", "6")
 
 -- Insert seed data into versions table
 INSERT INTO public.versions (id, project_id, "name", date_created) VALUES
-("1", "2", 'v2', '2024-11-07'),
-("2", "2", 'v3', '2024-11-07'),
-("3", "3", 'v2', '2024-05-20'),
-("4", "3", 'v3', '2024-07-11'),
-("5", "4", 'v2', '2024-11-10'),
-("6", "6", 'v2', '2023-11-15'),
-("7", "6", 'v2 STEMS', '2023-10-20'),
-("8", "6", 'v3', '2023-09-12'),
-("9", "6", 'v4', '2023-09-22');
+("1", "2", 'cool beat Project v2.als', ''),
+("3", "3", 'sad song idea Project v2.als', ''),
+("4", "3", 'sad song idea Project v3.als', ''),
+("6", "6", 'upbeat dancey Project v2.als', ''),
+("7", "6", 'upbeat dancey Project v2 STEMS.als', ''),
+("8", "6", 'upbeat dancey Project v3.als', ''),
+("9", "6", 'upbeat dancey Project v4.als', '');

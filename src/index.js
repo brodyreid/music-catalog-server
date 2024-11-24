@@ -5,7 +5,7 @@ const { serverError } = require('./utils');
 // const googleDrive = require('./googleDrive');
 
 const app = express();
-app.use(express.json()).use(cors({ origin: 'http://localhost:5173' }));
+app.use(express.json()).use(cors({ origin: process.env.ORIGIN_URL }));
 
 const PORT = process.env.SERVER_PORT || 3000;
 
@@ -24,7 +24,7 @@ app.get('/projects', async (_req, res) => {
         p.folder_path, 
         p.notes, 
         p.date_created, 
-        JSONB_AGG(DISTINCT jsonb_build_object('id', c.id, 'name', c."name")) FILTER (WHERE c.id IS NOT NULL) AS contributors,
+        JSONB_AGG(DISTINCT jsonb_build_object('id', c.id, 'first_name', c.first_name, 'artist_name', c.artist_name)) FILTER (WHERE c.id IS NOT NULL) AS contributors,
         JSONB_AGG(DISTINCT jsonb_build_object('id', v.id, 'name', v."name")) FILTER (WHERE v.id IS NOT NULL) AS versions
       FROM
         projects p
@@ -46,12 +46,12 @@ app.get('/projects', async (_req, res) => {
   }
 });
 
-app.post('/project/:id/release_name', async (req, res) => {
+app.post('/project/:id', async (req, res) => {
   const { id } = req.params;
-  const { release_name } = req.body;
+  const { release_name, notes } = req.body;
 
-  if (!release_name || !id) {
-    return res.status(400).send('No release name or no id.');
+  if (!id) {
+    return res.status(400).send('Bad id');
   }
 
   try {
@@ -59,12 +59,13 @@ app.post('/project/:id/release_name', async (req, res) => {
       UPDATE
         projects
       SET
-        release_name = $1
+        release_name = $1,
+        notes = $2
       WHERE 
-        id = $2
+        id = $3
       RETURNING
         *;
-      `, [release_name, id]);
+      `, [release_name, notes, id]);
 
     res.json(result.rows);
   } catch (error) {
